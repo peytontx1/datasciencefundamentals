@@ -1,0 +1,45 @@
+---
+title: "Homework 3"
+author: "TX"
+date: "8/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl) 
+setwd("C:/Users/User/Desktop")
+myData <- read_excel("covid-responses.xlsx") #loads dataset into the variable myData
+head(myData) #extracts the first few rows of our dataset
+```
+
+
+## Step One: Data Background
+
+This data set is aimed to explore the behavioral characteristics of people during the Corona-Virus pandemic. It seeks to access the general opinion and reaction of people such as their attitudes towards social distancing, their personal health precautions, and etc.
+
+## Step Two: Data Clarification
+
+```{r}
+nrow(myData) #extracts the number of rows in the dataset
+ncol(myData) #extracts the number of columns in the dataset
+```
+Consisted of 80 columns and 3460 rows. The individual columns of the data set includes personal data, such as email, name, gender, as well as survey questions such as listed above. The individual rows of the data set represents the personal data of each participant.
+
+## Step Two: Visualization
+
+```{r}
+library(ggplot2)
+a <- tapply(myData$SelfReported_Behavio_1, myData$age, mean)
+aa <- data.frame(year=names(a),staying_at_home = a)
+ggplot(aa, aes(year,staying_at_home)) + geom_point() 
+```
+This visualization shows the tendency of staying at home as age increases, from 1910 to 2002. I chose the visualization because I supposed a positive relationship between age and the tendency to stay at home. But according to the graph, the relationship is not so clear cut. We can in fact see a dip around the middle aged population, as the older and younger population tend to stay at home more. 
+
+As an alternative to this visualization, I wanted to show the relationship between age and the opinion on financial punishment, but due to the categorical nature of the data, the graph was hard to discern clearly. 
+
+What I wished but had limited capicity to execute was to clean up the x-axis of the graph. I tried to used 'scale_x_discrete', but as the values on axis went away, the values themselves went away as well.
+

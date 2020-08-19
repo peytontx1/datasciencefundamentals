@@ -1,0 +1,47 @@
+---
+title: "Homework 4"
+author: "TX"
+date: "8/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl) 
+setwd("C:/Users/User/Desktop")
+myData <- read_excel("covid-responses.xlsx") #loads dataset into the variable myData
+head(myData) #extracts the first few rows of our dataset
+```
+
+
+## Step One: Data Description
+
+First we are looking at subset of survey data called self reported behavior. This survey question is consisted of five smaller questions that describes self initiated behaviors such as staying at home, attending social gatherings on a scale of 0 to 100. Now we want to explore more subtle details of the self reported question on staying at home, where 0 indicates the participant does not practice self-isolation, and 100 does.
+
+```{r}
+summary(myData$SelfReported_Behavio_1)
+hist(myData$SelfReported_Behavio_1)
+```
+As we can see, most participants do report to be staying at home. Now, I want to examine a second variable, the participants age.
+
+```{r}
+summary(myData$age)
+hist(myData$age)
+```
+
+As we can see, most of the participants are born between the years of 1960 and 1990, which means that they are mostly between the age of 30 and 60. Now that we have some information on the distribution of the two variables, we should consider to what degree do these two variables correlate. My hypothesis is that, since the coronavirus is reported to hurt the older demographics more than the younger, older people tend to stay at home more so as to curtail their higher risk in face of the coronavirus.
+
+
+## Step Two: Data Visualization
+
+```{r}
+library(ggplot2)
+a <- tapply(myData$SelfReported_Behavio_1, myData$age, mean) #since there are many participants in each age group, I want to take the average so the graph is more intelligible.
+aa <- data.frame(year=names(a),staying_at_home = a)
+ggplot(aa, aes(year,staying_at_home)) + geom_point() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+This visualization shows the tendency of staying at home as age increases, from 1910 to 2002. I chose the visualization because I supposed a positive relationship between age and the tendency to stay at home. But according to the graph, the relationship is not so clear cut. We can in fact see a dip around the middle aged population, as the older and younger population tend to stay at home more. 
+
